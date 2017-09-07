@@ -43,7 +43,7 @@ public class Main {
 				jobrunner.downloadFile_all(args[1],args[2]);
 				if(!Jobrunner.failed_list.isEmpty())
 				{
-					System.out.println("Following files are not downloaded due to error occured in the downloading process:");
+					System.out.println("Following files are not downloaded due to error occurred in the downloading process:");
 					for(String tmp : Jobrunner.failed_list)
 					{
 						System.out.println(tmp);

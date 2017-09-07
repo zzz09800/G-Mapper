@@ -15,6 +15,7 @@ import com.google.api.services.drive.model.*;
 import java.io.*;
 import java.io.File;
 import java.net.SocketTimeoutException;
+import java.net.StandardSocketOptions;
 import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.util.*;
@@ -35,6 +36,7 @@ public class Jobrunner {
     static FileDataStoreFactory DATA_STORE_FACTORY;
 
     static final java.io.File DATA_STORE_DIR = new File(System.getProperty("user.home")+"/G-Mapper");
+	static final java.io.File CRED_JSON_LOCATION = new File(System.getProperty("user.home")+"/G-Mapper/tester1.json");
 
     static {
         try {
@@ -68,8 +70,18 @@ public class Jobrunner {
 
     public void authorize() throws IOException {
         double totalSize=0;
+
+        if(!DATA_STORE_DIR.exists())
+        	DATA_STORE_DIR.mkdirs();
+
+	    if(!CRED_JSON_LOCATION.canRead())
+	    {
+	    	System.out.println("Error reading credential json file. Exiting...");
+		    System.exit(1);
+	    }
+
         // Load client secrets.
-        GoogleClientSecrets clientSecrets = GoogleClientSecrets.load(JSON_FACTORY, new FileReader(System.getProperty("user.home")+"/G-Mapper/tester1.json"));
+        GoogleClientSecrets clientSecrets = GoogleClientSecrets.load(JSON_FACTORY, new FileReader(CRED_JSON_LOCATION));
 
         // Build flow and trigger user authorization request.
         GoogleAuthorizationCodeFlow flow = new GoogleAuthorizationCodeFlow.Builder(
